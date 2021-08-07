@@ -1,0 +1,66 @@
+.typography--variant-h1 {
+  font-size: 6rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-h2 {
+  font-size: 3.75rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-h3 {
+  font-size: 3rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-h4 {
+  font-size: 2.125rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-h5 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-h6 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-subheading1 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-subheading2 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.typography--variant-body1 {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.typography--variant-body2 {
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.typography--color-primary {
+  color: #f2994a;
+}
+
+.typography--color-error {
+  color: #eb5757;
+}
+

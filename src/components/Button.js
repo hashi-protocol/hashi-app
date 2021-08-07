@@ -13,14 +13,14 @@ const Button = ({ children, onClick, btnColor = 'teal', labelColor, disabled, ty
     };
 
     const primaryStyle = {
-        backgroundColor: '#1161fe',
+        backgroundColor: 'var(--button-primary-color)',
         border: 'none',
-        color: labelColor || 'black'
+        color: 'var(--button-text-color)'
     }
     const secondaryStyle = {
         backgroundColor: '#00000000',
         border: 'solid 2px black',
-        color: labelColor || 'white'
+        color: 'var(--button-text-color)'
     }
     const commonStyles = {
         backgroundColor: btnColor,
