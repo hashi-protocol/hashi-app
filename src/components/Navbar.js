@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './navbar.module.css'
-import logo from '../static/bridge.svg'
+import { ReactComponent as Logo } from '../static/bridge.svg';
 import EthereumButton from "./MetamaskButton";
 
 class Navbar extends React.Component {
@@ -16,10 +16,8 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className={`${styles.navbar} navbar`} >
-                <img
-                    className={styles.icon}
-                    src={logo} />
-                <EthereumButton/>
+                <Logo className={styles.icon} fill='var(--text-color)' />
+                <EthereumButton />
             </div >
         )
     }
