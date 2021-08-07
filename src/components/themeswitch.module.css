@@ -1,14 +1,12 @@
 /* The switch - the box around the slider */
 .switch {
-    position: absolute;
+    position: relative;
     width: 44px;
     height: 28px;
     border-radius: 60px;
     display: flex;
     padding: 0 5px;
     background: #bcbcbc;
-    right: 40px;
-    top: 100px;
 }
 
 /* Hide default HTML checkbox */
@@ -28,7 +26,6 @@
     bottom: 0;
     width: 28px;
     height: 28px;
-    /*background-color: #ccc;*/
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
@@ -45,13 +42,11 @@
     margin: auto 0;
     -webkit-transition: 0.4s;
     transition: 0.4s;
-    /*background: white url('https://i.ibb.co/FxzBYR9/night.png');*/
     background-repeat: no-repeat;
     background-position: center;
 }
 
 input:checked + .slider {
-    /*background-color: #2196f3;*/
     transform: translateX(24px);
     -webkit-transform: translateX(24px);
     -ms-transform: translateX(24px);
@@ -62,8 +57,6 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-
-    /*background: white url('https://i.ibb.co/7JfqXxB/sunny.png');*/
     background-repeat: no-repeat;
     background-position: center;
 }

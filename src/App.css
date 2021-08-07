@@ -17,16 +17,11 @@
 }
 
 .App-header {
-  /* background-color: #282c34; */
-  /*background: linear-gradient(264.99deg,#9f329f -52.92%,#1161fe 95.58%);*/
   background: var(--background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: space-between; */
   font-size: calc(10px + 2vmin);
-  /*color: white;*/
 }
 
 .Content {
