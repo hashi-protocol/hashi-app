@@ -21,4 +21,7 @@
     outline: 0;
     text-transform: capitalize;
     margin: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
 }
