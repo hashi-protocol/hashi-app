@@ -6,6 +6,7 @@ import {
   BeaconEvent,
   defaultEventCallbacks
 } from "@airgap/beacon-sdk";
+import TsButton from "./TsButton";
 
 
 type ButtonProps = {
@@ -90,13 +91,7 @@ const ConnectButton = ({
   });
 
   return (
-    <div className="buttons">
-      <button className="button" onClick={connectWallet}>
-        <span>
-          <i className="fas fa-wallet"></i>&nbsp; Connect with wallet
-        </span>
-      </button>
-    </div>
+    <TsButton onClick={connectWallet}>Connect with wallet</TsButton>
   );
 };
 
