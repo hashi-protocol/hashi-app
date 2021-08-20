@@ -5,7 +5,6 @@ import Button from "./Button";
 import Typography from "./Typography";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from "./swipernft.module.css";
-import LoadingSpiner from './LoadingSpiner';
 
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
@@ -76,7 +75,6 @@ export default function SwiperNFT(props) {
                 onSwiper={(swiper) => console.log(swiper)}
                 onSlideChange={() => console.log('slide change')}
         >
-            <LoadingSpiner/>
             {slides}
         </Swiper>
     );
