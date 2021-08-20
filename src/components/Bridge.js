@@ -58,8 +58,8 @@ class Bridge extends Component {
         const apiServer = process.env.REACT_APP_API_SERVER;
         const proxyServer = process.env.REACT_APP_PROXY_SERVER;
 
-        const url = (process.env.REACT_APP_ENV === 'prod') ? apiServer : proxyServer
-            + '1/address/'
+        let url = (process.env.REACT_APP_ENV === 'prod') ? apiServer : proxyServer;
+        url += '1/address/'
             // + this.props.account
             // TODO remove the line below (only to test)
             + '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250'
