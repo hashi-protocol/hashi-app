@@ -8,12 +8,11 @@ import ThemeSwitch from "./ThemeSwitch";
 import ThemeContext from '../context/ThemeContext';
 import Active from './connectTez'
 import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
+import Typography from "./Typography";
+import BigNumber from "bignumber.js";
+import { TezosToolkit } from "@taquito/taquito";
 
-
-
-
-const Navbar = () => {
-
+const Navbar = (props) => {
 
     const { dark, } = useContext(ThemeContext);
 
@@ -38,6 +37,7 @@ const Navbar = () => {
 
             <EthereumButton />
             <ThemeSwitch />
+            <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
         </div >
     )
 }
