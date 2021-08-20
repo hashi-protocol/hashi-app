@@ -7,6 +7,8 @@ import axios from "axios";
 import querystring from "querystring";
 import SwiperNFT from "./SwiperNFT";
 import ERC721 from "../static/ERC721.json"
+import { trackPromise} from 'react-promise-tracker';
+
 
 class Bridge extends Component {
 
@@ -44,27 +46,27 @@ class Bridge extends Component {
 
     fetchNFTsFromEth = () => {
 
+        // setting parameters with primer filters
         const parameters = {
             "nft": true,
             "match": '{"supports_erc.1.value":"erc721"}',
-            "key": 'ckey_66360f80fa6444babcebc84'
+            "key": process.env.REACT_APP_COVALENT_API_KEY
         }
         const get_request_args = querystring.stringify(parameters);
 
-        // const serviceServer = "http://api.covalenthq.com/v1/";
-        const proxyServer = "http://localhost:4000/api/";
+        // on local environment we use our proxy server to deal with CORS
+        const apiServer = process.env.REACT_APP_API_SERVER;
+        const proxyServer = process.env.REACT_APP_PROXY_SERVER;
 
-        // only for test
-        const url =  proxyServer
+        const url = (process.env.REACT_APP_ENV === 'prod') ? apiServer : proxyServer
             + '1/address/'
+            // + this.props.account
+            // TODO remove the line below (only to test)
             + '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250'
             + '/balances_v2/?'
             + get_request_args;
 
-        /*const url =  'http://api.covalenthq.com/v1/1/address/'
-            + this.props.account + '/balances_v2/?' + get_request_args;*/
-        axios.get(url,  { crossdomain: true }
-        )
+        const promise = axios.get(url,  { crossdomain: true })
             .then(res => {
                 const NFTs = res.data.data.items.filter(function (token) {
                     return token.supports_erc != null &&
@@ -74,9 +76,9 @@ class Bridge extends Component {
                 this.setState({ NFTs });
             })
             .catch(function (error) {
-                // handle error
                 console.log(error);
-            })
+            });
+        trackPromise(promise);
     }
 
     handleNFTLock = async (contractAddress, tokenId) => {
@@ -102,19 +104,15 @@ class Bridge extends Component {
         return (
             <div>
                 <Container>
-                    {this.state.balance}
-                    <Typography variant="h6">
-                        Tezos
-                    </Typography>
-                    <Button>Lock NFT</Button>
-
                     <Typography variant="h6">
                         Ethereum
                     </Typography>
-
                     <Button>Create Wrapped NFT</Button>
                 </Container>
                 <Container>
+                    <Typography variant="h5">
+                        Your NFTs on Ethereum
+                    </Typography>
                     <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
                 </Container>
             </div>

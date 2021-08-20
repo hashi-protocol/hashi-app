@@ -10,7 +10,6 @@ import Active from './connectTez'
 import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
 import Typography from "./Typography";
 import BigNumber from "bignumber.js";
-import { TezosToolkit } from "@taquito/taquito";
 
 const Navbar = (props) => {
 
