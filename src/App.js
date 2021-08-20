@@ -1,12 +1,9 @@
 import './App.css';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar.js'
 import Bridge from './components/Bridge.js'
-import { MetaMaskProvider } from 'metamask-react'
-import React from "react";
+import { useMetaMask } from 'metamask-react'
 // import { TezosToolkit } from "@taquito/taquito";
-
-
-
 
 function App() {
   // const [Tezos,] = useState<TezosToolkit>(
@@ -22,18 +19,18 @@ function App() {
   // const [, setBeaconConnection] = useState<boolean>(false);
   // const [,] = useState<string>("transfer");
 
+  const { ethereum, status, account } = useMetaMask();
+  const [balance, setBalance] = useState(0);
+
   return (
-    <div className="App">
-      <MetaMaskProvider>
+      <div className="App">
         <header className="App-header">
-          <Navbar />
+          <Navbar status={status} balance={balance}/>
           <div className="Content">
-            <Bridge />
+            <Bridge ethereum={ethereum} status={status} account={account} setBalance={setBalance}/>
           </div>
         </header>
-      </MetaMaskProvider>
-    </div>
+      </div>
   );
 }
-
 export default App;

@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './context/ThemeContext';
+import { MetaMaskProvider } from 'metamask-react'
 
 ReactDOM.render(
-  <React.StrictMode>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <MetaMaskProvider>
+            <ThemeProvider>
+                <App/>
+            </ThemeProvider>
+        </MetaMaskProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

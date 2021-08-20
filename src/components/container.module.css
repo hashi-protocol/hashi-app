@@ -5,4 +5,6 @@
     margin-top: 40px;
     color: black;
     box-shadow: var(--container-box-shadow);
+    max-width: 90vw;
+    padding: 10px 0;
 }

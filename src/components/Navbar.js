@@ -7,10 +7,12 @@ import EthereumButton from "./MetamaskButton";
 import ConnectButton from './ConnectWallet';
 import ThemeSwitch from "./ThemeSwitch";
 import ThemeContext from '../context/ThemeContext';
+import Typography from "./Typography";
+import BigNumber from "bignumber.js";
 import { TezosToolkit } from "@taquito/taquito";
 
 
-const Navbar = () => {
+const Navbar = (props) => {
 
     const [Tezos,] = useState(
         new TezosToolkit("https://api.tez.ie/rpc/granadanet")
@@ -54,6 +56,7 @@ const Navbar = () => {
             />
             <EthereumButton />
             <ThemeSwitch />
+            <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
         </div >
     )
 }
