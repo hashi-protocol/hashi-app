@@ -5,6 +5,7 @@ import Button from "./Button";
 import Typography from "./Typography";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from "./swipernft.module.css";
+import LoadingSpiner from './LoadingSpiner';
 
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
@@ -23,7 +24,7 @@ export default function SwiperNFT(props) {
                 if (data.external_data != null)
                     slides.push(
                         <SwiperSlide>
-                            <Card className={styles.Card} key={{/*index*/}} >
+                            <Card className={styles.Card} key={data.token_id} >
                                 <Card.Img src={data.external_data.image} alt="Card image" className={styles.ImgTeaser}/>
                                 <Card.Body>
                                     <Card.Title>
@@ -49,12 +50,33 @@ export default function SwiperNFT(props) {
         <Swiper className={styles.SwiperContainer}
                 spaceBetween={50}
                 slidesPerView={3}
+                breakpoints = {{
+                    // when window width is >= 320px
+                    320: {
+                        width: 320,
+                        slidesPerView: 1,
+                        spaceBetween: 20
+                    },
+                    // when window width is >= 640px
+                    640: {
+                        width: 640,
+                        slidesPerView: 2,
+                        spaceBetween: 30,
+                    },
+                    // when window width is >= 768px
+                    1024: {
+                        width: 1024,
+                        slidesPerView: 3,
+                        spaceBetween: 40
+                    },
+                }}
                 navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
                 onSwiper={(swiper) => console.log(swiper)}
                 onSlideChange={() => console.log('slide change')}
         >
+            <LoadingSpiner/>
             {slides}
         </Swiper>
     );
