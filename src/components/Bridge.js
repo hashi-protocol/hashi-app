@@ -9,9 +9,14 @@ import SwiperNFT from "./SwiperNFT";
 import ERC721 from "../static/ERC721.json"
 import FaucetERC721 from "../static/FaucetERC721.json"
 import { trackPromise } from 'react-promise-tracker';
+<<<<<<< HEAD
 import { NFTStorage, toGatewayURL } from 'nft.storage';
 import LoadingSpiner from './LoadingSpiner';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+=======
+import { NFTStorage } from 'nft.storage';
+import LoadingSpiner from './LoadingSpiner';
+>>>>>>> 1f8118b (generating faucet NFT)
 
 
 class Bridge extends Component {
@@ -31,9 +36,12 @@ class Bridge extends Component {
         this.fetchNFTsFromEth = this.fetchNFTsFromEth.bind(this);
         this.handleNFTLock = this.handleNFTLock.bind(this);
         this.handleNFTGenerationETH = this.handleNFTGenerationETH.bind(this);
+<<<<<<< HEAD
         this.queryNFTsFromGraph = this.queryNFTsFromGraph.bind(this);
         this.getTokenURIByTokenId = this.getTokenURIByTokenId.bind(this);
         this.getNFTMetadataFromIPFS = this.getNFTMetadataFromIPFS.bind(this);
+=======
+>>>>>>> 1f8118b (generating faucet NFT)
     }
 
     initWeb3 = () => {
@@ -73,7 +81,6 @@ class Bridge extends Component {
         let url = (process.env.REACT_APP_ENV === 'prod') ? apiServer : proxyServer;
 
         this.state.web3.eth.getChainId().then(chainId => {
-
             if (chainId === 1) {
 
                 url += chainId
@@ -252,6 +259,58 @@ class Bridge extends Component {
         }
     }
 
+    handleNFTGenerationETH = async () => {
+
+        // get random image
+        let imageFile;
+        let imageResponseUrl;
+        try {
+            const imagePromise = axios.get("https://picsum.photos/250/300?random=1");
+            trackPromise(imagePromise);
+            const response = await imagePromise;
+            
+            imageResponseUrl = response.request.responseURL;
+            imageFile = new File([response.data], 'NFT.jpg', {
+                type: "image/*",
+            });
+        } catch(error) {
+            console.log("error", error);
+        }
+        
+        // upload token URI to IPFS (NFT Storage)
+        const metadataPromise = this.state.nftStorageClient.store({
+            name: 'NFT Faucet',
+            description: 'This a NFT Faucet',
+            image: imageFile
+        })
+        trackPromise(metadataPromise);
+        const metadata = await metadataPromise;
+
+        // mint ERC721 token
+        console.log('Calling ERC721 mint function...');
+        const txPromise = this.state.NFTFaucetContract.methods.mintNFT(metadata.url)
+            .send({ from: this.props.account })
+            .then(res => {
+                console.log('Success', res);
+                alert(`You have successfully minted your NFT`);
+                const nftList = this.state.NFTs.slice();
+                nftList.push({
+                    contract_name: 'NFT Faucet',
+                    nft_data: [
+                        {
+                            external_data: {
+                                image: imageResponseUrl
+                            }
+                        }
+                    ]
+                });
+                this.setState({NFTs: nftList, hasNFTs: true});
+            })
+            .catch(err => console.log(err))
+        trackPromise(txPromise);
+        await txPromise;
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
@@ -284,14 +343,12 @@ class Bridge extends Component {
                     <Typography variant="h5">
                         Your NFTs on Ethereum
                     </Typography>
-                    <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
-
                     <LoadingSpiner/>
                     {swiper}
+                    <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
                 </Container>
             </div>
         )
     }
 }
-
 export default Bridge;
