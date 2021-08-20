@@ -1,6 +1,7 @@
-import React from "react";
-import { useMetaMask } from "metamask-react";
+import React  from "react";
+import {useMetaMask} from "metamask-react";
 import Button from "./Button";
+import Typography from "./Typography";
 
 export default function EthereumButton() {
 
@@ -8,17 +9,15 @@ export default function EthereumButton() {
 
     let ethStatus = "";
 
-    if (status === "initializing") ethStatus = <div>Synchronisation with MetaMask ongoing...</div>
+    if (status === "initializing") ethStatus = <Typography variant="body1">Synchronisation with MetaMask ongoing...</Typography>
 
-    if (status === "unavailable") ethStatus = <div>Please, install the MetaMask wallet</div>
+    if (status === "unavailable") ethStatus = <Typography variant="body1">Please, install the MetaMask wallet</Typography>
 
-    if (status === "notConnected") ethStatus = <div>Connect to MetaMask</div>
+    if (status === "notConnected") ethStatus = <Button onClick={connect}>Connect to MetaMask</Button>
 
-    if (status === "connecting") ethStatus = <div>Connecting...</div>
+    if (status === "connecting") ethStatus = <Typography variant="body1">Connecting...</Typography>
 
-    if (status === "connected") ethStatus = <div>Connected account: {account}</div>
+    if (status === "connected") ethStatus = <Typography variant="body1">Signed as: {account.replace(account.substring(4,38), "...")}</Typography>
 
-    return <Button onClick={connect} variant="body1">{ethStatus}</Button>;
-
-
+    return ethStatus;
 }

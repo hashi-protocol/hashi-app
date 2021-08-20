@@ -1,0 +1,18 @@
+.ImgTeaser {
+    width: 100%;
+}
+
+.Card {
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: var(--container-background);
+    box-shadow: var(--container-box-shadow);
+    width: 18rem;
+    border-style: none;
+    cursor: pointer;
+    margin: 30px;
+}
+.SwiperContainer {
+    padding: 0;
+    /*overflow: visible !important;*/
+}

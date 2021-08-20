@@ -2,7 +2,7 @@
 .switch {
     position: relative;
     width: 44px;
-    height: 28px;
+    height: 1em;
     border-radius: 60px;
     display: flex;
     padding: 0 5px;
@@ -24,8 +24,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    width: 28px;
-    height: 28px;
+    width: 1em;
+    height: 1em;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
