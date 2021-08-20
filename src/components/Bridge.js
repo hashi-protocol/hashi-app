@@ -7,7 +7,10 @@ import axios from "axios";
 import querystring from "querystring";
 import SwiperNFT from "./SwiperNFT";
 import ERC721 from "../static/ERC721.json"
-import { trackPromise} from 'react-promise-tracker';
+import FaucetERC721 from "../static/FaucetERC721.json"
+import { trackPromise } from 'react-promise-tracker';
+import { NFTStorage } from 'nft.storage';
+import LoadingSpiner from './LoadingSpiner';
 
 
 class Bridge extends Component {
@@ -17,12 +20,16 @@ class Bridge extends Component {
 
         this.state = {
             web3: null,
-            NFTs: []
+            NFTs: [],
+            hasNFTs: true,
+            NFTFaucetContract: null,
+            nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE })
         }
 
         this.initWeb3 = this.initWeb3.bind(this);
         this.fetchNFTsFromEth = this.fetchNFTsFromEth.bind(this);
         this.handleNFTLock = this.handleNFTLock.bind(this);
+        this.handleNFTGenerationETH = this.handleNFTGenerationETH.bind(this);
     }
 
     initWeb3 = () => {
@@ -41,6 +48,7 @@ class Bridge extends Component {
 
             // fetch NFTs by user's address
             this.fetchNFTsFromEth();
+            this.setState({ NFTFaucetContract: new this.state.web3.eth.Contract(FaucetERC721.abi, process.env.REACT_APP_NFT_ETH_FAUCET) });
         });
     }
 
@@ -59,26 +67,33 @@ class Bridge extends Component {
         const proxyServer = process.env.REACT_APP_PROXY_SERVER;
 
         let url = (process.env.REACT_APP_ENV === 'prod') ? apiServer : proxyServer;
-        url += '1/address/'
-            // + this.props.account
-            // TODO remove the line below (only to test)
-            + '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250'
-            + '/balances_v2/?'
-            + get_request_args;
 
-        const promise = axios.get(url,  { crossdomain: true })
-            .then(res => {
-                const NFTs = res.data.data.items.filter(function (token) {
-                    return token.supports_erc != null &&
-                        token.supports_erc.includes("erc721");
+        this.state.web3.eth.getChainId().then(chainId => {
+            url += chainId
+                + '/address/'
+                + this.props.account
+                + '/balances_v2/?'
+                + get_request_args;
+
+            console.log(url)
+
+            const promise = axios.get(url,  { crossdomain: true })
+                .then(res => {
+                    console.log(res)
+                    const NFTs = res.data.data.items.filter(function (token) {
+                        return token.supports_erc != null &&
+                            token.supports_erc.includes("erc721");
+                    });
+
+                    console.log(NFTs);
+                    if (NFTs.length === 0) this.setState({ hasNFTs: false });
+                    this.setState({ NFTs });
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-                console.log(NFTs);
-                this.setState({ NFTs });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        trackPromise(promise);
+            trackPromise(promise);
+        });
     }
 
     handleNFTLock = async (contractAddress, tokenId) => {
@@ -94,6 +109,58 @@ class Bridge extends Component {
             .catch(err => console.log(err))
     }
 
+    handleNFTGenerationETH = async () => {
+
+        // get random image
+        let imageFile;
+        let imageResponseUrl;
+        try {
+            const imagePromise = axios.get("https://picsum.photos/250/300?random=1");
+            trackPromise(imagePromise);
+            const response = await imagePromise;
+            
+            imageResponseUrl = response.request.responseURL;
+            imageFile = new File([response.data], 'NFT.jpg', {
+                type: "image/*",
+            });
+        } catch(error) {
+            console.log("error", error);
+        }
+        
+        // upload token URI to IPFS (NFT Storage)
+        const metadataPromise = this.state.nftStorageClient.store({
+            name: 'NFT Faucet',
+            description: 'This a NFT Faucet',
+            image: imageFile
+        })
+        trackPromise(metadataPromise);
+        const metadata = await metadataPromise;
+
+        // mint ERC721 token
+        console.log('Calling ERC721 mint function...');
+        const txPromise = this.state.NFTFaucetContract.methods.mintNFT(metadata.url)
+            .send({ from: this.props.account })
+            .then(res => {
+                console.log('Success', res);
+                alert(`You have successfully minted your NFT`);
+                const nftList = this.state.NFTs.slice();
+                nftList.push({
+                    contract_name: 'NFT Faucet',
+                    nft_data: [
+                        {
+                            external_data: {
+                                image: imageResponseUrl
+                            }
+                        }
+                    ]
+                });
+                this.setState({NFTs: nftList, hasNFTs: true});
+            })
+            .catch(err => console.log(err))
+        trackPromise(txPromise);
+        await txPromise;
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
@@ -101,6 +168,19 @@ class Bridge extends Component {
     }
 
     render() {
+
+        let swiper;
+        if (this.state.hasNFTs) {
+            swiper = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+        } else {
+            swiper = <div>
+                <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
+                <Typography variant="body1">Don't worry! You can generate a free random token just by clicking on the
+                button bellow</Typography>
+                <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
+            </div>
+        }
+
         return (
             <div>
                 <Container>
@@ -113,7 +193,8 @@ class Bridge extends Component {
                     <Typography variant="h5">
                         Your NFTs on Ethereum
                     </Typography>
-                    <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+                    <LoadingSpiner/>
+                    {swiper}
                 </Container>
             </div>
         )
