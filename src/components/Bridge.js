@@ -114,7 +114,7 @@ class Bridge extends Component {
             .send({ from: this.props.account})
             .then(res => {
                 console.log('Success', res);
-                alert(`You have successfully locked your nft #${this.state.lendingAmount}, you can mint it now on the another chain!`)
+                alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`)
             })
             .catch(err => console.log(err))
     }
