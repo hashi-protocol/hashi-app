@@ -7,7 +7,7 @@ function Active() {
   return (
     <div>
       <header>
-        {!connected && <Button onClick={connect}>Connect</Button>}
+        {!connected && <Button onClick={connect}>Connect to a Tezos Wallet</Button>}
         {connected && (
           <Button onClick={disconnect}>Disconnect from {activeAccount?.address}</Button>
         )}
