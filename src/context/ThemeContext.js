@@ -47,7 +47,7 @@ const lightTheme = [
     '--button-text-color: #000',
     '--text-color: #000',
     '--container-box-shadow: 0 12px 35px 0 rgb(181 181 181 / 75%)',
-    '--container-background: #FFFFFFB3'
+    '--container-background: #ffffff'
 ];
 
 

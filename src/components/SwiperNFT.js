@@ -1,20 +1,20 @@
 // import Swiper core and required modules
-import SwiperCore, { Navigation, Scrollbar, A11y } from 'swiper';
+import SwiperCore, { Navigation, Scrollbar, A11y, Lazy } from 'swiper';
 import { Card } from "react-bootstrap";
 import Button from "./Button";
 import Typography from "./Typography";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from "./swipernft.module.css";
-import LoadingSpiner from './LoadingSpiner';
 
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
 import 'swiper/components/scrollbar/scrollbar.scss';
+import 'swiper/components/lazy/lazy.scss';
 import React from "react";
 
 // install Swiper modules
-SwiperCore.use([Navigation, Scrollbar, A11y]);
+SwiperCore.use([Navigation, Scrollbar, A11y, Lazy]);
 
 export default function SwiperNFT(props) {
     let slides = [];
@@ -37,7 +37,7 @@ export default function SwiperNFT(props) {
                                             Token id : {data.token_id}
                                         </Typography>
                                     </Card.Text>
-                                    <Button onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
+                                    <Button style={{marginBottom: '20px'}}onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
                                         Lock NFT
                                     </Button>
                                 </Card.Body>
@@ -76,7 +76,6 @@ export default function SwiperNFT(props) {
                 onSwiper={(swiper) => console.log(swiper)}
                 onSlideChange={() => console.log('slide change')}
         >
-            <LoadingSpiner/>
             {slides}
         </Swiper>
     );

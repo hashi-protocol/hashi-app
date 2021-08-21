@@ -13,7 +13,7 @@ export default function EthereumButton() {
 
     if (status === "unavailable") ethStatus = <Typography variant="body1">Please, install the MetaMask wallet</Typography>
 
-    if (status === "notConnected") ethStatus = <Button onClick={connect}>Connect to MetaMask</Button>
+    if (status === "notConnected") ethStatus = <Button style={{ margin: '10px' }} onClick={connect}>Connect to MetaMask</Button>
 
     if (status === "connecting") ethStatus = <Typography variant="body1">Connecting...</Typography>
 
