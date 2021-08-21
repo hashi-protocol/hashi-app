@@ -7,6 +7,7 @@
     display: flex;
     padding: 0 5px;
     background: #bcbcbc;
+    margin: 10px;
 }
 
 /* Hide default HTML checkbox */
