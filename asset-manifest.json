@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/hashi-protocol/hashi-app/static/css/main.ead3b649.chunk.css",
+    "main.js": "/hashi-protocol/hashi-app/static/js/main.155cdf40.chunk.js",
+    "main.js.map": "/hashi-protocol/hashi-app/static/js/main.155cdf40.chunk.js.map",
+    "runtime-main.js": "/hashi-protocol/hashi-app/static/js/runtime-main.c786cd37.js",
+    "runtime-main.js.map": "/hashi-protocol/hashi-app/static/js/runtime-main.c786cd37.js.map",
+    "static/css/2.2a3ab5f3.chunk.css": "/hashi-protocol/hashi-app/static/css/2.2a3ab5f3.chunk.css",
+    "static/js/2.e1d1929b.chunk.js": "/hashi-protocol/hashi-app/static/js/2.e1d1929b.chunk.js",
+    "static/js/2.e1d1929b.chunk.js.map": "/hashi-protocol/hashi-app/static/js/2.e1d1929b.chunk.js.map",
+    "static/js/3.47dd97e3.chunk.js": "/hashi-protocol/hashi-app/static/js/3.47dd97e3.chunk.js",
+    "static/js/3.47dd97e3.chunk.js.map": "/hashi-protocol/hashi-app/static/js/3.47dd97e3.chunk.js.map",
+    "index.html": "/hashi-protocol/hashi-app/index.html",
+    "static/css/2.2a3ab5f3.chunk.css.map": "/hashi-protocol/hashi-app/static/css/2.2a3ab5f3.chunk.css.map",
+    "static/css/main.ead3b649.chunk.css.map": "/hashi-protocol/hashi-app/static/css/main.ead3b649.chunk.css.map",
+    "static/js/2.e1d1929b.chunk.js.LICENSE.txt": "/hashi-protocol/hashi-app/static/js/2.e1d1929b.chunk.js.LICENSE.txt",
+    "static/media/bridge.63fcee24.svg": "/hashi-protocol/hashi-app/static/media/bridge.63fcee24.svg",
+    "static/media/name-black.51a01892.svg": "/hashi-protocol/hashi-app/static/media/name-black.51a01892.svg",
+    "static/media/name-white.fdc63352.svg": "/hashi-protocol/hashi-app/static/media/name-white.fdc63352.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c786cd37.js",
+    "static/css/2.2a3ab5f3.chunk.css",
+    "static/js/2.e1d1929b.chunk.js",
+    "static/css/main.ead3b649.chunk.css",
+    "static/js/main.155cdf40.chunk.js"
+  ]
+}
