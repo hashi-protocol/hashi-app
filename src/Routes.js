@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { ETHToTezos, TezosToETH, MainPage } from "./pages/pages";
 
 function Routes(props) {
+
     return (
         <Switch>
             <Route exact path="/" children={<MainPage {...props}/>}/>
