@@ -24,7 +24,9 @@ class Bridge extends Component {
             NFTs: [],
             hasNFTs: true,
             NFTFaucetContract: null,
-            nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE })
+            nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE }),
+            WrappedNFTs: [],
+            hasWrappedNFTs: false,
         }
 
         this.initWeb3 = this.initWeb3.bind(this);
@@ -35,10 +37,11 @@ class Bridge extends Component {
         this.getTokenURIByTokenId = this.getTokenURIByTokenId.bind(this);
         this.getNFTMetadataFromIPFS = this.getNFTMetadataFromIPFS.bind(this);
         this.getLockedNFTByAddress = this.getLockedNFTByAddress.bind(this);
+        this.getMintedNFTonTezos = this.getMintedNFTonTezos.bind(this);
     }
 
     initWeb3 = () => {
-        this.setState({web3: new Web3(this.props.ethereum)}, () => {
+        this.setState({ web3: new Web3(this.props.ethereum) }, () => {
 
             this.state.web3.eth.getBalance(this.props.account).then(value => {
                 this.props.setBalance(this.state.web3.utils.fromWei(value, 'ether'));
@@ -83,7 +86,7 @@ class Bridge extends Component {
 
                 console.log(url)
 
-                const promise = axios.get(url,  { crossdomain: true })
+                const promise = axios.get(url, { crossdomain: true })
                     .then(res => {
                         console.log(res)
                         const NFTs = res.data.data.items.filter(function (token) {
@@ -110,7 +113,7 @@ class Bridge extends Component {
         console.log(tokenId);
         const erc721Contract = new this.state.web3.eth.Contract(tzNFT.abi, contractAddress);
         await erc721Contract.methods.safeTransferFrom(this.props.account, '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250', tokenId)
-            .send({ from: this.props.account})
+            .send({ from: this.props.account })
             .then(res => {
                 console.log('Success', res);
                 alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`)
@@ -133,10 +136,10 @@ class Bridge extends Component {
             imageFile = new File([blob], 'nft.jpg', { type: "image/jpeg" });
 
             imageResponseUrl = response.url;
-        } catch(error) {
+        } catch (error) {
             console.log("error", error);
         }
-        
+
         // upload token URI to IPFS (NFT Storage)
         const metadataPromise = this.state.nftStorageClient.store({
             name: 'NFT Faucet',
@@ -166,7 +169,7 @@ class Bridge extends Component {
                         }
                     ]
                 });
-                this.setState({NFTs: nftList, hasNFTs: true});
+                this.setState({ NFTs: nftList, hasNFTs: true });
             })
             .catch(err => console.log(err))
         trackPromise(txPromise);
@@ -205,7 +208,7 @@ class Bridge extends Component {
     getTokenURIByTokenId = async (contractAddress, tokenId) => {
 
         const erc721Contract = new this.state.web3.eth.Contract(ERC721.abi, contractAddress);
-        erc721Contract.methods.tokenURI(tokenId).call({ from: this.props.account}).then(uri => {
+        erc721Contract.methods.tokenURI(tokenId).call({ from: this.props.account }).then(uri => {
             if (uri) {
                 this.getNFTMetadataFromIPFS(uri, tokenId, contractAddress);
             } else {
@@ -242,44 +245,100 @@ class Bridge extends Component {
                     }
                 ]
             });
-            this.setState({NFTs: nftList, hasNFTs: true});
+            this.setState({ NFTs: nftList, hasNFTs: true });
 
-        } catch(error) {
+        } catch (error) {
             console.log("error", error);
             // if (error.response && error.response.status === 503)
-                // alert('Ouups... It seems that IPFS gateway is down... Try to make your request later.')
+            // alert('Ouups... It seems that IPFS gateway is down... Try to make your request later.')
         }
+    }
+
+    getMintedNFTonTezos = async () => {
+        const nftList = [];
+
+        const contractResponse = await fetch('https://api.better-call.dev/v1/bigmap/florencenet/121539/keys');
+        const jsonContractResponse = await contractResponse.json();
+        const data = jsonContractResponse;
+
+        // todo change account
+        const accountResponse = await fetch('https://api.better-call.dev/v1/account/florencenet/tz1dzX38gGDhCvapD3fW2njRegGBfChbyipJ/token_balances');
+        const jsonAccountResponse = await accountResponse.json();
+        const balances = await jsonAccountResponse["balances"];
+        const balancesLength = await balances.length;
+        for (let i = 0; i < balancesLength; i++) {
+            if (balances[i]['contract'] === 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha') {
+
+                // Get Token Id 
+                const tokenId = balances[i]['token_id']
+
+                console.log("tokenId", tokenId)
+
+                // Get Url
+                const urlOfTokenId = await data[tokenId - 1]['data']['value']['children']['1']['children']['1']['value'];
+
+                console.log(urlOfTokenId)
+
+
+                // Add the NFT to the list
+                nftList.push({
+                    contract_address: 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha',
+                    contract_name: 'Hashi Tezos Minter',
+                    nft_data: [
+                        {
+                            token_id: tokenId,
+                            external_data: {
+                                image: urlOfTokenId
+                            }
+                        }
+                    ]
+                });
+
+            }
+
+        }
+        this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: true });
     }
 
     getLockedNFTByAddress = async () => {
     }
-    
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
         }
+        window.addEventListener('load', this.getMintedNFTonTezos());
     }
 
     render() {
 
         let swiperAvailableNFTs;
         let swiperLockedNFTs;
+        let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
-            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} />
         } else {
             swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
                 <Typography variant="body1">Don't worry! You can generate a free random token just by clicking on the
-                button bellow</Typography>
+                    button bellow</Typography>
             </div>
         }
 
         if (this.state.hasLockedNFTs) {
-            swiperLockedNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+            swiperLockedNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} />
         } else {
             swiperLockedNFTs = <div>
                 <Typography variant="body1">It seems that you don't have any locked NFTs</Typography>
+            </div>
+        }
+
+        if (this.state.hasWrappedNFTs) {
+            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} />
+        } else {
+            swiperWrappedNFTs = <div>
+                <Typography variant="body1">You have not bridged any NFT to Tezos yet</Typography>
             </div>
         }
 
@@ -289,7 +348,7 @@ class Bridge extends Component {
                     <Typography variant="h5">
                         Your available NFTs on Ethereum
                     </Typography>
-                    <LoadingSpiner/>
+                    <LoadingSpiner />
                     {swiperAvailableNFTs}
                     <Button style={{ margin: '20px' }} onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
                 </Container>
@@ -298,8 +357,15 @@ class Bridge extends Component {
                     <Typography variant="h5">
                         Your locked NFTs on Ethereum
                     </Typography>
-                    <LoadingSpiner/>
+                    <LoadingSpiner />
                     {swiperLockedNFTs}
+                </Container>
+                <Container>
+                    <Typography variant="h5">
+                        Your wrapped NFTs on Tezos
+                    </Typography>
+                    {swiperWrappedNFTs}
+                    <LoadingSpiner />
                 </Container>
             </div>
         )
