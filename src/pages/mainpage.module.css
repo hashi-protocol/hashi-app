@@ -1,0 +1,8 @@
+.teaser {
+    position: absolute;
+    top: 40vh;
+    color: white;
+    font-family: var(--bs-font-sans-serif);
+    width: 100vw;
+    text-align: center;
+}

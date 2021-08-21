@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "@tezos-contrib/react-wallet-provider": "^1.0.0-alpha.11",
     "axios": "^0.21.1",
+    "boostrap": "^2.0.0",
     "classnames": "^2.3.1",
     "dotenv": "^10.0.0",
     "dotenv-webpack": "^7.0.3",
@@ -32,6 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "swiper": "^6.8.2",
+    "three": "^0.131.3",
     "typescript": "^4.3.5",
     "web-vitals": "^1.0.1",
     "web3": "^1.5.2"

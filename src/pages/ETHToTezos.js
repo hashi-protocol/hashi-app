@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import Container from './Container';
-import Typography from './Typography';
-import Button from './Button';
+import Container from '../components/Container';
+import Typography from '../components/Typography';
+import Button from '../components/Button';
 import Web3 from "web3";
 import axios from "axios";
 import querystring from "querystring";
-import SwiperNFT from "./SwiperNFT";
+import SwiperNFT from "../components/SwiperNFT";
 import ERC721 from "../static/ERC721.json"
 import FaucetERC721 from "../static/FaucetERC721.json"
 import { trackPromise } from 'react-promise-tracker';
 import { NFTStorage, toGatewayURL } from 'nft.storage';
-import LoadingSpiner from './LoadingSpiner';
+import LoadingSpiner from '../components/LoadingSpiner';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 class Bridge extends Component {
@@ -258,32 +258,44 @@ class Bridge extends Component {
 
     render() {
 
-        let swiper;
+        let swiperAvailableNFTs;
+        let swiperLockedNFTs;
+
         if (this.state.hasNFTs) {
-            swiper = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
         } else {
-            swiper = <div>
+            swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
                 <Typography variant="body1">Don't worry! You can generate a free random token just by clicking on the
                 button bellow</Typography>
             </div>
         }
 
+        if (this.state.hasLockedNFTs) {
+            swiperLockedNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock}/>
+        } else {
+            swiperLockedNFTs = <div>
+                <Typography variant="body1">It seems that you don't have any locked NFTs</Typography>
+            </div>
+        }
+
         return (
             <div>
                 <Container>
-                    <Typography variant="h6">
-                        Ethereum
-                    </Typography>
-                    <Button>Create Wrapped NFT</Button>
-                </Container>
-                <Container>
                     <Typography variant="h5">
-                        Your NFTs on Ethereum
+                        Your available NFTs on Ethereum
                     </Typography>
                     <LoadingSpiner/>
-                    {swiper}
-                    <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
+                    {swiperAvailableNFTs}
+                    <Button style={{ margin: '20px' }} onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
+                </Container>
+
+                <Container>
+                    <Typography variant="h5">
+                        Your locked NFTs on Ethereum
+                    </Typography>
+                    <LoadingSpiner/>
+                    {swiperLockedNFTs}
                 </Container>
             </div>
         )

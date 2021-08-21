@@ -11,6 +11,11 @@ import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
 import Typography from "./Typography";
 import BigNumber from "bignumber.js";
 import WalletsButton from './WalletsButton';
+import {Link} from "react-router-dom";
+
+
+import {Nav} from "react-bootstrap";
+
 
 const Navbar = (props) => {
 
@@ -39,6 +44,11 @@ const Navbar = (props) => {
                 <Name />
             </div>
             <div className={styles.right}>
+                <Nav style={{ display: "flex", flexDirection: "row" }}>
+                    <Link className={`${styles.link}`} to="/"><Typography variant="body1">Home</Typography></Link>
+                    <Link className={`${styles.link}`}to="/eth-to-tezos"><Typography variant="body1">ETHToTezos</Typography></Link>
+                    <Link className={`${styles.link}`} to="/tezos-to-eth"><Typography variant="body1">TezosToETH</Typography></Link>
+                </Nav>
                 <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
                 <ThemeSwitch />
                 <WalletsButton >
