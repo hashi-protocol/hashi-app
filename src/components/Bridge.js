@@ -208,7 +208,7 @@ class Bridge extends Component {
         const erc721Contract = new this.state.web3.eth.Contract(ERC721.abi, contractAddress);
         erc721Contract.methods.tokenURI(tokenId).call({ from: this.props.account}).then(uri => {
             if (uri) {
-                this.getNFTMetadataFromIPFS(uri, tokenId);
+                this.getNFTMetadataFromIPFS(uri, tokenId, contractAddress);
             } else {
                 console.log('Token URI not found');
             }
@@ -216,7 +216,7 @@ class Bridge extends Component {
         });
     }
 
-    getNFTMetadataFromIPFS = async (uri, tokenId) => {
+    getNFTMetadataFromIPFS = async (uri, tokenId, contractAddress) => {
 
         // convert IPFS link to the gateway url
         const gatewayURL = process.env.REACT_APP_IPFS_GATEWAY + uri.replace("ipfs://", "");
@@ -232,6 +232,7 @@ class Bridge extends Component {
             // add NFT to the state list
             const nftList = this.state.NFTs.slice();
             nftList.push({
+                contract_address: contractAddress,
                 contract_name: metadata.data.name,
                 nft_data: [
                     {
