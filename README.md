@@ -12,3 +12,21 @@ We imagined the protocol in such a way that there is no multi chain transactions
 ### Decentralization
 
 The protocol, unlike most of the bridges out there, can be use in a full trustless manner. We just deploy the 4 contracts needed to achieve this (2 per chain), and everything can happen without us now. Of course we also build an app, for non-nerds that just want to expand the field of possibilities for their NFTs.
+
+## Quick start
+
+Clone the project 
+```
+git clone https://github.com/hashi-protocol/hashi-app.git && cd hashi-app
+```
+
+Dependancies
+```
+yarn install
+```
+
+Connect your Ethereum wallet on the `Kovan` testnet
+
+Connect your Tezos wallet on the `Florencenet` testnet
+
+You are ready to try Hashi ! ✨
