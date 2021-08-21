@@ -1,5 +1,5 @@
 // import Swiper core and required modules
-import SwiperCore, { Navigation, Scrollbar, A11y } from 'swiper';
+import SwiperCore, { Navigation, Scrollbar, A11y, Lazy } from 'swiper';
 import { Card } from "react-bootstrap";
 import Button from "./Button";
 import Typography from "./Typography";
@@ -10,10 +10,11 @@ import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
 import 'swiper/components/scrollbar/scrollbar.scss';
+import 'swiper/components/lazy/lazy.scss';
 import React from "react";
 
 // install Swiper modules
-SwiperCore.use([Navigation, Scrollbar, A11y]);
+SwiperCore.use([Navigation, Scrollbar, A11y, Lazy]);
 
 export default function SwiperNFT(props) {
     let slides = [];
