@@ -17,15 +17,15 @@ function App() {
       <Router>
         <header className="App-header">
           <Navbar status={status} balance={balance} />
-          <div className="Content">
-            <Routes
-                ethereum={ethereum}
-                status={status}
-                account={account}
-                setBalance={setBalance}
-            />
-          </div>
-          <Footer/>
+              <div className="Content">
+                <Routes
+                    ethereum={ethereum}
+                    status={status}
+                    account={account}
+                    setBalance={setBalance}
+                />
+              </div>
+             <Footer/>
         </header>
       </Router>
     </div>

@@ -6,6 +6,7 @@ import Web3 from "web3";
 import axios from "axios";
 import querystring from "querystring";
 import SwiperNFT from "../components/SwiperNFT";
+import tzNFT from "../static/tzNFT.json"
 import ERC721 from "../static/ERC721.json"
 import FaucetERC721 from "../static/FaucetERC721.json"
 import { trackPromise } from 'react-promise-tracker';
@@ -33,7 +34,7 @@ class Bridge extends Component {
         this.queryNFTsFromGraph = this.queryNFTsFromGraph.bind(this);
         this.getTokenURIByTokenId = this.getTokenURIByTokenId.bind(this);
         this.getNFTMetadataFromIPFS = this.getNFTMetadataFromIPFS.bind(this);
-
+        this.getLockedNFTByAddress = this.getLockedNFTByAddress.bind(this);
     }
 
     initWeb3 = () => {
@@ -107,7 +108,7 @@ class Bridge extends Component {
     handleNFTLock = async (contractAddress, tokenId) => {
         console.log(contractAddress);
         console.log(tokenId);
-        const erc721Contract = new this.state.web3.eth.Contract(ERC721.abi, contractAddress);
+        const erc721Contract = new this.state.web3.eth.Contract(tzNFT.abi, contractAddress);
         await erc721Contract.methods.safeTransferFrom(this.props.account, '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250', tokenId)
             .send({ from: this.props.account})
             .then(res => {
@@ -248,6 +249,9 @@ class Bridge extends Component {
             // if (error.response && error.response.status === 503)
                 // alert('Ouups... It seems that IPFS gateway is down... Try to make your request later.')
         }
+    }
+
+    getLockedNFTByAddress = async () => {
     }
     
     componentDidUpdate(prevProps, prevState, snapshot) {

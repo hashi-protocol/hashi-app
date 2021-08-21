@@ -42,13 +42,13 @@ const Navbar = (props) => {
             <div className={styles.left}>
                 <Logo className={styles.icon} fill='var(--text-color)' />
                 <Name />
-            </div>
-            <div className={styles.right}>
                 <Nav style={{ display: "flex", flexDirection: "row" }}>
                     <Link className={`${styles.link}`} to="/"><Typography variant="body1">Home</Typography></Link>
                     <Link className={`${styles.link}`}to="/eth-to-tezos"><Typography variant="body1">ETHToTezos</Typography></Link>
                     <Link className={`${styles.link}`} to="/tezos-to-eth"><Typography variant="body1">TezosToETH</Typography></Link>
                 </Nav>
+            </div>
+            <div className={styles.right}>
                 <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
                 <ThemeSwitch />
                 <WalletsButton >
