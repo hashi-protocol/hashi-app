@@ -19,6 +19,7 @@
     margin-top: calc(100vh - 85vh - 20px);
     border-radius: 20px;
     background-color: var(--container-background);
+    opacity: 1;
     box-shadow: var(--container-box-shadow);
     padding: 10px 0;
     max-height: 70vh;

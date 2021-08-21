@@ -37,7 +37,7 @@ export default function SwiperNFT(props) {
                                             Token id : {data.token_id}
                                         </Typography>
                                     </Card.Text>
-                                    <Button onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
+                                    <Button style={{marginBottom: '20px'}}onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
                                         Lock NFT
                                     </Button>
                                 </Card.Body>

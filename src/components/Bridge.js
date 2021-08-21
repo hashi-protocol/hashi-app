@@ -266,7 +266,6 @@ class Bridge extends Component {
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
                 <Typography variant="body1">Don't worry! You can generate a free random token just by clicking on the
                 button bellow</Typography>
-                <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
             </div>
         }
 
@@ -282,8 +281,6 @@ class Bridge extends Component {
                     <Typography variant="h5">
                         Your NFTs on Ethereum
                     </Typography>
-                    <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
-
                     <LoadingSpiner/>
                     {swiper}
                     <Button onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
