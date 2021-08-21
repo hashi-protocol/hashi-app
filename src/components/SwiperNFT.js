@@ -25,7 +25,7 @@ export default function SwiperNFT(props) {
                     slides.push(
                         <SwiperSlide>
                             <Card className={styles.Card} key={data.token_id} >
-                                <Card.Img src={data.external_data.image} alt="Card image" className={styles.ImgTeaser}/>
+                                <Card.Img src={data.external_data.image} alt="Card image" className={styles.ImgTeaser} />
                                 <Card.Body>
                                     <Card.Title>
                                         <Typography variant="h6">
@@ -37,8 +37,8 @@ export default function SwiperNFT(props) {
                                             Token id : {data.token_id}
                                         </Typography>
                                     </Card.Text>
-                                    <Button style={{marginBottom: '20px'}}onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
-                                        Lock NFT
+                                    <Button style={{ marginBottom: '20px' }} onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
+                                        {props.buttonMessage}
                                     </Button>
                                 </Card.Body>
                             </Card>
@@ -48,33 +48,33 @@ export default function SwiperNFT(props) {
     });
     return (
         <Swiper className={styles.SwiperContainer}
-                spaceBetween={50}
-                slidesPerView={3}
-                breakpoints = {{
-                    // when window width is >= 320px
-                    320: {
-                        width: 320,
-                        slidesPerView: 1,
-                        spaceBetween: 20
-                    },
-                    // when window width is >= 640px
-                    640: {
-                        width: 640,
-                        slidesPerView: 2,
-                        spaceBetween: 30,
-                    },
-                    // when window width is >= 768px
-                    1024: {
-                        width: 1024,
-                        slidesPerView: 3,
-                        spaceBetween: 40
-                    },
-                }}
-                navigation
-                pagination={{ clickable: true }}
-                scrollbar={{ draggable: true }}
-                onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={() => console.log('slide change')}
+            spaceBetween={50}
+            slidesPerView={3}
+            breakpoints={{
+                // when window width is >= 320px
+                320: {
+                    width: 320,
+                    slidesPerView: 1,
+                    spaceBetween: 20
+                },
+                // when window width is >= 640px
+                640: {
+                    width: 640,
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                },
+                // when window width is >= 768px
+                1024: {
+                    width: 1024,
+                    slidesPerView: 3,
+                    spaceBetween: 40
+                },
+            }}
+            navigation
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={() => console.log('slide change')}
         >
             {slides}
         </Swiper>

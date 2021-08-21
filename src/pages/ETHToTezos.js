@@ -20,15 +20,15 @@ import { InMemorySigner } from '@taquito/signer';
 const Tezos = new TezosToolkit('https://florencenet.smartpy.io');
 //Tezos.setProvider({ signer: await InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp') });
 InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp')
-  .then((theSigner) => {
-    Tezos.setProvider({ signer: theSigner });
-    //We can access the public key hash
-    return Tezos.signer.publicKeyHash();
-  })
-  .then((publicKeyHash) => {
-    console.log(`The public key hash associated is: ${publicKeyHash}.`);
-  })
-  .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
+    .then((theSigner) => {
+        Tezos.setProvider({ signer: theSigner });
+        //We can access the public key hash
+        return Tezos.signer.publicKeyHash();
+    })
+    .then((publicKeyHash) => {
+        console.log(`The public key hash associated is: ${publicKeyHash}.`);
+    })
+    .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
 
 class Bridge extends Component {
 
@@ -138,11 +138,11 @@ class Bridge extends Component {
 
         const tzContract = await Tezos.wallet.at("KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha");
         const op = await tzContract.methods.mint(
-         "tz1RpMDtuu9mLThpSe4ZEBRNMnX7nsPHFQio",
-         1,
-        "The Third",
-        tokenId,
-        this.state.NFTs[0]['nft_data'][0]['external_data']['image'],
+            "tz1RpMDtuu9mLThpSe4ZEBRNMnX7nsPHFQio",
+            1,
+            "The Third",
+            tokenId,
+            this.state.NFTs[0]['nft_data'][0]['external_data']['image'],
         ).send();
         await op.confirmation();
     }
@@ -343,7 +343,7 @@ class Bridge extends Component {
         let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
-            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} />
+            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock NFT" />
         } else {
             swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
@@ -361,7 +361,7 @@ class Bridge extends Component {
         }
 
         if (this.state.hasWrappedNFTs) {
-            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} />
+            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} buttonMessage="Burn NFT" />
         } else {
             swiperWrappedNFTs = <div>
                 <Typography variant="body1">You have not bridged any NFT to Tezos yet</Typography>
@@ -377,14 +377,6 @@ class Bridge extends Component {
                     <LoadingSpiner />
                     {swiperAvailableNFTs}
                     <Button style={{ margin: '20px' }} onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
-                </Container>
-
-                <Container>
-                    <Typography variant="h5">
-                        Your locked NFTs on Ethereum
-                    </Typography>
-                    <LoadingSpiner />
-                    {swiperLockedNFTs}
                 </Container>
                 <Container>
                     <Typography variant="h5">
