@@ -10,10 +10,19 @@ import Active from './connectTez'
 import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
 import Typography from "./Typography";
 import BigNumber from "bignumber.js";
+import WalletsButton from './WalletsButton';
 
 const Navbar = (props) => {
 
     const { dark, } = useContext(ThemeContext);
+
+    function TezosButton() {
+        return (
+            <WalletProvider name="my-example-app" clientType="beacon">
+                <Active />
+            </WalletProvider>
+        )
+    }
 
     function Name() {
         if (dark) {
@@ -29,14 +38,16 @@ const Navbar = (props) => {
                 <Logo className={styles.icon} fill='var(--text-color)' />
                 <Name />
             </div>
-
-            <WalletProvider name="my-example-app" clientType="beacon">
-                <Active />
-            </WalletProvider>
-
-            <EthereumButton />
-            <ThemeSwitch />
-            <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
+            <div className={styles.right}>
+                <Typography variant="body1" hidden={props.status !== 'connected'}>Balance: {new BigNumber(props.balance).toFixed(2)} ETH</Typography>
+                <ThemeSwitch />
+                <WalletsButton >
+                    <div>
+                        <TezosButton />
+                        <EthereumButton />
+                    </div>
+                </WalletsButton>
+            </div>
         </div >
     )
 }

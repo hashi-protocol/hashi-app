@@ -17,6 +17,14 @@
     align-items: center;
 }
 
+.right {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .icon {
     height: 40px;
 }
