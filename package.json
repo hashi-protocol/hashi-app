@@ -7,6 +7,7 @@
     "@airgap/beacon-sdk": "^2.3.1",
     "@apollo/client": "^3.4.8",
     "@taquito/beacon-wallet": "^10.1.0",
+    "@taquito/signer": "^10.1.0",
     "@taquito/taquito": "^10.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

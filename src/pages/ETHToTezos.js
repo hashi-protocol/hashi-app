@@ -13,6 +13,22 @@ import { trackPromise } from 'react-promise-tracker';
 import { NFTStorage, toGatewayURL } from 'nft.storage';
 import LoadingSpiner from '../components/LoadingSpiner';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@taquito/signer';
+
+
+const Tezos = new TezosToolkit('https://florencenet.smartpy.io');
+//Tezos.setProvider({ signer: await InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp') });
+InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp')
+  .then((theSigner) => {
+    Tezos.setProvider({ signer: theSigner });
+    //We can access the public key hash
+    return Tezos.signer.publicKeyHash();
+  })
+  .then((publicKeyHash) => {
+    console.log(`The public key hash associated is: ${publicKeyHash}.`);
+  })
+  .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
 
 class Bridge extends Component {
 
@@ -119,6 +135,16 @@ class Bridge extends Component {
                 alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`)
             })
             .catch(err => console.log(err))
+
+        const tzContract = await Tezos.wallet.at("KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha");
+        const op = await tzContract.methods.mint(
+         "tz1RpMDtuu9mLThpSe4ZEBRNMnX7nsPHFQio",
+         1,
+        "The Third",
+        tokenId,
+        this.state.NFTs[0]['nft_data'][0]['external_data']['image'],
+        ).send();
+        await op.confirmation();
     }
 
     handleNFTGenerationETH = async () => {
