@@ -29,7 +29,7 @@ Dependancies
 yarn install
 ```
 
-Connect your Ethereum wallet on the `Kovan` testnet
+Connect your Ethereum wallet on the `Ropsten` testnet
 
 Connect your Tezos wallet on the `Florencenet` testnet
 
@@ -47,7 +47,10 @@ You are ready to try Hashi ! ✨
   - [KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha](https://florencenet.tzkt.io/KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha/operations/)
 - Ethereum locker
   - [Code](https://github.com/hashi-protocol/hashi-ethereum/blob/master/NFTLock.sol)
-  - [0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250](https://kovan.etherscan.io/address/0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250)
+  - [0x3Af52fa879F13eEb90b98CEb07449f7A1Bd2Fd70](https://ropsten.etherscan.io/address/0x3Af52fa879F13eEb90b98CEb07449f7A1Bd2Fd70)
+- Ethereum faucet
+  - [Code](https://github.com/hashi-protocol/hashi-ethereum-nft-faucet/blob/master/contracts/Nft.sol)
+  - [0xEEA8eCCF0c573F559447348F66224270e6E7937E](https://ropsten.etherscan.io/address/0xEEA8eCCF0c573F559447348F66224270e6E7937E)
 
 ## Operation (simplified)
 
