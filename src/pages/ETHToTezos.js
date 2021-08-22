@@ -129,11 +129,31 @@ class Bridge extends Component {
         console.log(contractAddress);
         console.log(tokenId);
         const erc721Contract = new this.state.web3.eth.Contract(tzNFT.abi, contractAddress);
-        await erc721Contract.methods.safeTransferFrom(this.props.account, '0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250', tokenId)
-            .send({ from: this.props.account })
+        await erc721Contract.methods.safeTransferFrom(this.props.account, process.env.REACT_APP_ETH_LOCK_CONTRACT, tokenId)
+            .send({ from: this.props.account})
             .then(res => {
                 console.log('Success', res);
-                alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`)
+                alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`);
+
+                //remove token from NFTs
+                for(var i = 0; i < this.state.NFTs.length; i++)
+                {
+                    console.log(this.state.NFTs[i].contract_address)
+                    if(this.state.NFTs[i].contract_address === contractAddress) {
+                        for(var j = 0; j < this.state.NFTs[i].nft_data.length; j++) {
+                            console.log(this.state.NFTs[i].nft_data[j].token_id)
+                            if(this.state.NFTs[i].nft_data[j].token_id === tokenId)
+                            {
+                                let nftList = this.state.NFTs.slice();
+                                nftList.splice(i, 1);
+                                this.setState({NFTs: nftList});
+                            }
+                        }
+                        if (this.state.NFTs[i].nft_data.length === 0) {
+                            this.setState({hasNFTs: false});
+                        }
+                    }
+                }
             })
             .catch(err => console.log(err))
 
@@ -187,9 +207,11 @@ class Bridge extends Component {
                 alert(`You have successfully minted your NFT`);
                 const nftList = this.state.NFTs.slice();
                 nftList.push({
+                    contract_address: process.env.REACT_APP_ETH_LOCK_CONTRACT,
                     contract_name: 'NFT Faucet',
                     nft_data: [
                         {
+                            token_id: res.events.Transfer.returnValues[2],
                             external_data: {
                                 image: imageResponseUrl
                             }
@@ -225,9 +247,13 @@ class Bridge extends Component {
         })
             .then(data => {
                 console.log("Subgraph data: ", data.data.nfts);
-                data.data.nfts.forEach(async token => {
-                    await this.getTokenURIByTokenId(token.contractAddress, token.id);
-                })
+                if (data.data.nfts.length === 0) {
+                    this.setState({ hasNFTs: false });
+                } else {
+                    data.data.nfts.forEach(async token => {
+                        await this.getTokenURIByTokenId(token.contractAddress, token.id);
+                    });
+                }
             })
             .catch(err => { console.log("Error fetching data: ", err) });
     }
@@ -332,6 +358,7 @@ class Bridge extends Component {
     }
 
     getLockedNFTByAddress = async () => {
+       // call tezos mint contract to fetch all NFTs
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
