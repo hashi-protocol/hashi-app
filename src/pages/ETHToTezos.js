@@ -345,7 +345,7 @@ class Bridge extends Component {
         let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
-            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock NFT" />
+            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock and wrap NFT" />
         } else {
             swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
@@ -355,7 +355,7 @@ class Bridge extends Component {
         }
 
         if (this.state.hasWrappedNFTs) {
-            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} buttonMessage="Burn NFT" />
+            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} buttonMessage="Burn and unlock NFT" />
         } else {
             swiperWrappedNFTs = <div>
                 <Typography variant="body1">You have not bridged any NFT to Tezos yet</Typography>
