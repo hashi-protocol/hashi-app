@@ -43,6 +43,7 @@ class Bridge extends Component {
             nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE }),
             WrappedNFTs: [],
             hasWrappedNFTs: false,
+            tzLockedNFTsNeedsUpdate: true
         }
 
         this.initWeb3 = this.initWeb3.bind(this);
@@ -313,43 +314,47 @@ class Bridge extends Component {
         const jsonContractResponse = await contractResponse.json();
         const data = jsonContractResponse;
 
-        // todo change account
-        const accountResponse = await fetch('https://api.better-call.dev/v1/account/florencenet/tz1dzX38gGDhCvapD3fW2njRegGBfChbyipJ/token_balances');
-        const jsonAccountResponse = await accountResponse.json();
-        const balances = await jsonAccountResponse["balances"];
-        const balancesLength = await balances.length;
-        for (let i = 0; i < balancesLength; i++) {
-            if (balances[i]['contract'] === 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha') {
+        console.log("tezosAddress", this.props.tezosAddress)
+        if (this.props.tezosConnected) {
+            // todo change account
+            const accountResponse = await fetch(`https://api.better-call.dev/v1/account/florencenet/${this.props.tezosAddress}/token_balances`);
+            const jsonAccountResponse = await accountResponse.json();
+            const balances = await jsonAccountResponse["balances"];
+            const balancesLength = await balances.length;
+            for (let i = 0; i < balancesLength; i++) {
+                if (balances[i]['contract'] === 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha') {
 
-                // Get Token Id 
-                const tokenId = balances[i]['token_id']
+                    // Get Token Id 
+                    const tokenId = balances[i]['token_id']
 
-                console.log("tokenId", tokenId)
+                    console.log("tokenId", tokenId)
 
-                // Get Url
-                const urlOfTokenId = await data[tokenId - 1]['data']['value']['children']['1']['children']['1']['value'];
+                    // Get Url
+                    const urlOfTokenId = await data[tokenId - 1]['data']['value']['children']['1']['children']['1']['value'];
 
-                console.log(urlOfTokenId)
+                    console.log(urlOfTokenId)
 
 
-                // Add the NFT to the list
-                nftList.push({
-                    contract_address: 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha',
-                    contract_name: 'Hashi Tezos Minter',
-                    nft_data: [
-                        {
-                            token_id: tokenId,
-                            external_data: {
-                                image: urlOfTokenId
+                    // Add the NFT to the list
+                    nftList.push({
+                        contract_address: 'KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha',
+                        contract_name: 'Hashi Tezos Minter',
+                        nft_data: [
+                            {
+                                token_id: tokenId,
+                                external_data: {
+                                    image: urlOfTokenId
+                                }
                             }
-                        }
-                    ]
-                });
+                        ]
+                    });
 
+                }
             }
 
         }
-        this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: true });
+        const hasWrappedNFTs = (nftList === []);
+        this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: hasWrappedNFTs });
     }
 
     getLockedNFTByAddress = async () => {
@@ -360,7 +365,10 @@ class Bridge extends Component {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
         }
-        window.addEventListener('load', this.getMintedNFTonTezos());
+        if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
+            this.getMintedNFTonTezos();
+            this.setState({ tzLockedNFTsNeedsUpdate: false });
+        }
     }
 
     render() {
@@ -369,7 +377,7 @@ class Bridge extends Component {
         let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
-            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock NFT" />
+            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock and wrap NFT" />
         } else {
             swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
@@ -379,7 +387,7 @@ class Bridge extends Component {
         }
 
         if (this.state.hasWrappedNFTs) {
-            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} buttonMessage="Burn NFT" />
+            swiperWrappedNFTs = <SwiperNFT NFTs={this.state.WrappedNFTs} buttonMessage="Burn and unlock NFT" />
         } else {
             swiperWrappedNFTs = <div>
                 <Typography variant="body1">You have not bridged any NFT to Tezos yet</Typography>

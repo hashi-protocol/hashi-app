@@ -39,6 +39,8 @@ You are ready to try Hashi ! ✨
 
 ## Useful links
 
+- App : https://hashi-protocol.netlify.app/
+
 - [Youtube Video](https://www.youtube.com/watch?v=KRsYEKjtffU)
 - Tezos wrapper
   - [Code](https://github.com/hashi-protocol/hashi-tezos/blob/master/python-contracts/modifiedFA2.py)
