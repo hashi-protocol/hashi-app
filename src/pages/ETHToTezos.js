@@ -73,7 +73,7 @@ class Bridge extends Component {
 
             // fetch NFTs by user's address
             this.fetchNFTsFromEth();
-            this.setState({ NFTFaucetContract: new this.state.web3.eth.Contract(FaucetERC721.abi, process.env.REACT_APP_NFT_ETH_FAUCET) });
+            this.setState({ NFTFaucetContract: new this.state.web3.eth.Contract(FaucetERC721.abi, process.env.REACT_APP_NFTETHFAUCET_CONTRACT_ROPSTEN) });
         });
     }
 
@@ -119,17 +119,21 @@ class Bridge extends Component {
                         console.log(error);
                     });
                 trackPromise(promise);
-            } else if (chainId === 42) {
+            } else if (chainId === 3) {
                 this.queryNFTsFromGraph();
             }
         });
     }
 
     handleNFTLock = async (contractAddress, tokenId) => {
-        console.log(contractAddress);
-        console.log(tokenId);
+
+        if (this.props.status !== 'connected') {
+            alert('Please, connect your Metamask wallet');
+            return;
+        }
+
         const erc721Contract = new this.state.web3.eth.Contract(tzNFT.abi, contractAddress);
-        await erc721Contract.methods.safeTransferFrom(this.props.account, process.env.REACT_APP_ETH_LOCK_CONTRACT, tokenId)
+        let promise = erc721Contract.methods.safeTransferFrom(this.props.account, process.env.REACT_APP_NFTLOCK_CONTRACT_ROPSTEN, tokenId)
             .send({ from: this.props.account})
             .then(res => {
                 console.log('Success', res);
@@ -156,6 +160,8 @@ class Bridge extends Component {
                 }
             })
             .catch(err => console.log(err))
+        trackPromise(promise);
+        await promise;
 
         const tzContract = await Tezos.wallet.at("KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha");
         const op = await tzContract.methods.mint(
@@ -169,6 +175,11 @@ class Bridge extends Component {
     }
 
     handleNFTGenerationETH = async () => {
+
+        if (this.props.status !== 'connected') {
+            alert('Please, connect your Metamask wallet');
+            return;
+        }
 
         // get random image
         let imageFile;
@@ -207,7 +218,7 @@ class Bridge extends Component {
                 alert(`You have successfully minted your NFT`);
                 const nftList = this.state.NFTs.slice();
                 nftList.push({
-                    contract_address: process.env.REACT_APP_ETH_LOCK_CONTRACT,
+                    contract_address: process.env.REACT_APP_NFTETHFAUCET_CONTRACT_ROPSTEN,
                     contract_name: 'NFT Faucet',
                     nft_data: [
                         {
@@ -396,11 +407,11 @@ class Bridge extends Component {
 
         return (
             <div>
+                <LoadingSpiner />
                 <Container>
                     <Typography variant="h5">
                         Your available NFTs on Ethereum
                     </Typography>
-                    <LoadingSpiner />
                     {swiperAvailableNFTs}
                     <Button style={{ margin: '20px' }} onClick={this.handleNFTGenerationETH}>Generate me an NFT!</Button>
                 </Container>
@@ -409,7 +420,6 @@ class Bridge extends Component {
                         Your wrapped NFTs on Tezos
                     </Typography>
                     {swiperWrappedNFTs}
-                    <LoadingSpiner />
                 </Container>
             </div>
         )
