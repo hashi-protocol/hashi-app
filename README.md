@@ -17,8 +17,6 @@ The protocol, unlike most of the bridges out there, can be use in a full trustle
 
 We imagined the protocol in such a way that there is no multi chain transactions, which are often attack vectors for bridges. Plus, it allow to add other blockchains in the protocol quickly, to expand the ecosystem of NFT tezos again and again.
 
-
-
 ## Quick start
 
 Clone the project 
@@ -36,3 +34,52 @@ Connect your Ethereum wallet on the `Kovan` testnet
 Connect your Tezos wallet on the `Florencenet` testnet
 
 You are ready to try Hashi ! ✨
+
+
+## Operation (simplified)
+
+### Idea
+
+Each chain has two contracts: 
+- a locker, which store the NFT on their main chain until the wrap version is burn.
+- a minter, or wrapper, which mint the wrap token, with the same metadata.
+
+The operation is pretty simple: a user comes and lock its NFT into the locker on chain A. Then he mint a wrapped token on chain B. And when he wants to recover its original NFT, he burns the wrapped one (we have equipped it with this function) and he can unlock it on blockchain A.
+
+### Security
+
+Now we are able to lock, mint, burn and unlock NFTs from Tezos to Ethereum. But what is to stop someone from mining his own nft several times, or even mining a nft that is not his ? And what happen if the wrapped NFT has been sold ?
+
+So we have some checks to do before letting these operations take place :
+- check if an NFT has already been wrapped before wrapping it
+- check if a wrapped NFT has been burned on blockchain B before unlocking it on blockchain A
+- check that user who wants to wrap an NFT on blockchain B is the owner of it on blockchain A
+- check that user who wants to unlock an NFT on blockchain A was the last owner of it on blockchain A 
+
+### Decentralization
+
+Of course we could have done this of chain, one a secured server. But that is not what we wanted to do here. We wanted Hashi to be fully trustless, fully decentralized, and fully autonomous. 
+
+So we managed to find solutions to these security checks with decentralized oracles and with adding on chain storage on certain functions. More on that in the coming whitepaper...
+
+### Summary
+
+Let's take an example. Alice owns a beautful NFT on the Ethereum blockchain, and wants to use it in art galleries or games, but with low fees, and with the minor ecological impact of Tezos.
+
+#### She wraps it using Hashi :
+
+![hashi - wrap](https://user-images.githubusercontent.com/74971347/130337548-3487f31a-6c8e-4047-80d2-6cf1124a9d12.jpg)
+
+#### And when she wants to recover it :
+
+![hashi - unwrap](https://user-images.githubusercontent.com/74971347/130337551-0670e06d-e162-4dbc-9d48-2be576e3528d.jpg)
+
+## About 
+
+This project was built by :
+
+- Nikita Terekhov
+- Pierre-Antoine Arsaguet
+- Mathis Gontier Delaunay
+
+We are all engineering student from Telecom SudParis, and INSA Lyon. We met with [KRYPTOSPHERE](https://kryptosphere.org/en/), the first and biggest french student association working on blockchain and new technologies.
