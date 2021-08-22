@@ -39,7 +39,7 @@ You are ready to try Hashi ! ✨
 
 ## Useful links
 
-- App : [https://hashi-protocol.netlify.app/]
+- App : https://hashi-protocol.netlify.app/
 
 - [Youtube Video](https://www.youtube.com/watch?v=KRsYEKjtffU)
 - Tezos wrapper
