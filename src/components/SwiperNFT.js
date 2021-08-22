@@ -23,8 +23,8 @@ export default function SwiperNFT(props) {
             token.nft_data.forEach(data => {
                 if (data.external_data != null)
                     slides.push(
-                        <SwiperSlide>
-                            <Card className={styles.Card} key={data.token_id} >
+                        <SwiperSlide key={data.token_id + token.contract_address}>
+                            <Card className={styles.Card} key={data.token_id + token.contract_address} >
                                 <Card.Img src={data.external_data.image} alt="Card image" className={styles.ImgTeaser} />
                                 <Card.Body>
                                     <Card.Title>
@@ -32,11 +32,9 @@ export default function SwiperNFT(props) {
                                             {token.contract_name}
                                         </Typography>
                                     </Card.Title>
-                                    <Card.Text>
                                         <Typography variant="body1">
                                             Token id : {data.token_id}
                                         </Typography>
-                                    </Card.Text>
                                     <Button style={{ marginBottom: '20px' }} onClick={() => props.handleNFTLock(token.contract_address, data.token_id)} variant="primary">
                                         {props.buttonMessage}
                                     </Button>
