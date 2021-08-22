@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Router>
         <header className="App-header">
-          <WalletProvider name="my-example-app" clientType="beacon">
+          <WalletProvider name="hashi-protocol" clientType="beacon">
             <Navbar status={status} balance={balance} />
             <div className="Content">
               <Routes
