@@ -35,6 +35,17 @@ Connect your Tezos wallet on the `Florencenet` testnet
 
 You are ready to try Hashi ! ✨
 
+(We deployed a nice NFT faucet so that everyone can try and give feedback)
+
+## Useful links
+
+- [Youtube Video](https://www.youtube.com/watch?v=KRsYEKjtffU)
+- Tezos wrapper
+  - [Code](https://github.com/hashi-protocol/hashi-tezos/blob/master/python-contracts/modifiedFA2.py)
+  - [KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha](https://florencenet.tzkt.io/KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha/operations/)
+- Ethereum locker
+  - [Code](https://github.com/hashi-protocol/hashi-ethereum/blob/master/NFTLock.sol)
+  - [0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250](https://kovan.etherscan.io/address/0xc51505386b5A1d3e7ECb88CEc112796D8CEe0250)
 
 ## Operation (simplified)
 
