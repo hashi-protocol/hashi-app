@@ -7,14 +7,13 @@ import EthereumButton from "./MetamaskButton";
 import ThemeSwitch from "./ThemeSwitch";
 import ThemeContext from '../context/ThemeContext';
 import Active from './connectTez'
-import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
 import Typography from "./Typography";
 import BigNumber from "bignumber.js";
 import WalletsButton from './WalletsButton';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
-import {Nav} from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 
 const Navbar = (props) => {
@@ -23,9 +22,7 @@ const Navbar = (props) => {
 
     function TezosButton() {
         return (
-            <WalletProvider name="my-example-app" clientType="beacon">
-                <Active />
-            </WalletProvider>
+            <Active />
         )
     }
 
@@ -44,7 +41,7 @@ const Navbar = (props) => {
                 <Name />
                 <Nav style={{ display: "flex", flexDirection: "row" }}>
                     <Link className={`${styles.link}`} to="/"><Typography variant="body1">Home</Typography></Link>
-                    <Link className={`${styles.link}`}to="/eth-to-tezos"><Typography variant="body1">ETHToTezos</Typography></Link>
+                    <Link className={`${styles.link}`} to="/eth-to-tezos"><Typography variant="body1">ETHToTezos</Typography></Link>
                     <Link className={`${styles.link}`} to="/tezos-to-eth"><Typography variant="body1">TezosToETH</Typography></Link>
                 </Nav>
             </div>
