@@ -385,6 +385,21 @@ class Bridge extends Component {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+        if (this.state.web3 == null && this.props.status === "connected") {
+            this.initWeb3();
+        }
+        if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
+            this.getMintedNFTonTezos();
+            this.setState({tzLockedNFTsNeedsUpdate: false});
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     render() {
 
         let swiperAvailableNFTs;
