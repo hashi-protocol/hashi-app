@@ -5,6 +5,7 @@ import Footer from './components/Footer.js'
 import { useMetaMask } from 'metamask-react'
 import Routes from './Routes';
 import { BrowserRouter as Router } from "react-router-dom";
+import { WalletProvider } from '@tezos-contrib/react-wallet-provider';
 require('dotenv').config()
 
 function App() {
@@ -16,16 +17,18 @@ function App() {
     <div className="App">
       <Router>
         <header className="App-header">
-          <Navbar status={status} balance={balance} />
-              <div className="Content">
-                <Routes
-                    ethereum={ethereum}
-                    status={status}
-                    account={account}
-                    setBalance={setBalance}
-                />
-              </div>
-             <Footer/>
+          <WalletProvider name="my-example-app" clientType="beacon">
+            <Navbar status={status} balance={balance} />
+            <div className="Content">
+              <Routes
+                ethereum={ethereum}
+                status={status}
+                account={account}
+                setBalance={setBalance}
+              />
+            </div>
+            <Footer />
+          </WalletProvider>
         </header>
       </Router>
     </div>
