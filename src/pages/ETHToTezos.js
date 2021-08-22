@@ -43,6 +43,7 @@ class Bridge extends Component {
             nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE }),
             WrappedNFTs: [],
             hasWrappedNFTs: false,
+            tzLockedNFTsNeedsUpdate: true
         }
 
         this.initWeb3 = this.initWeb3.bind(this);
@@ -336,7 +337,10 @@ class Bridge extends Component {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
         }
-        window.addEventListener('load', this.getMintedNFTonTezos());
+        if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
+            this.getMintedNFTonTezos();
+            this.setState({ tzLockedNFTsNeedsUpdate: false });
+        }
     }
 
     render() {
