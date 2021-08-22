@@ -211,6 +211,9 @@ class Bridge extends Component {
         // mint ERC721 token
         console.log('Calling ERC721 mint function...');
         console.log(metadata.url);
+        if (this.state.web3 == null && this.props.status === "connected") {
+            this.initWeb3();
+        }
         const txPromise = this.state.NFTFaucetContract.methods.mintNFT(metadata.url)
             .send({ from: this.props.account })
             .then(res => {
