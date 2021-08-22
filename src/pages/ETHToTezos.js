@@ -327,7 +327,8 @@ class Bridge extends Component {
             }
 
         }
-        this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: true });
+        const hasWrappedNFTs = (nftList === []);
+        this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: hasWrappedNFTs });
     }
 
     getLockedNFTByAddress = async () => {
