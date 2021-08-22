@@ -339,7 +339,6 @@ class Bridge extends Component {
     render() {
 
         let swiperAvailableNFTs;
-        let swiperLockedNFTs;
         let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
@@ -349,14 +348,6 @@ class Bridge extends Component {
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
                 <Typography variant="body1">Don't worry! You can generate a free random token just by clicking on the
                     button bellow</Typography>
-            </div>
-        }
-
-        if (this.state.hasLockedNFTs) {
-            swiperLockedNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} />
-        } else {
-            swiperLockedNFTs = <div>
-                <Typography variant="body1">It seems that you don't have any locked NFTs</Typography>
             </div>
         }
 
