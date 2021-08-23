@@ -52,7 +52,7 @@ You are ready to try Hashi ! ✨
   - [Code](https://github.com/hashi-protocol/hashi-ethereum-nft-faucet/blob/master/contracts/Nft.sol)
   - [0xEEA8eCCF0c573F559447348F66224270e6E7937E](https://ropsten.etherscan.io/address/0xEEA8eCCF0c573F559447348F66224270e6E7937E)
 - Ethereum wrapper
-  - [Code](https://github.com/hashi-protocol/hashi-ethereum/blob/master/tzNFT.sol)
+  - [Code](https://github.com/hashi-protocol/hashi-ethereum/blob/master/contracts/tzNFT.sol)
   - [0x8C26e1553602f5f80759C4F93Fb97cf4757c5baa](https://ropsten.etherscan.io/address/0x8C26e1553602f5f80759C4F93Fb97cf4757c5baa)
 
 ## Operation (simplified)
