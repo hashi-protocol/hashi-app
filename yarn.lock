@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@airgap/beacon-sdk@^2.3.0", "@airgap/beacon-sdk@^2.3.1":
+"@airgap/beacon-sdk@^2.3.0":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@airgap/beacon-sdk/-/beacon-sdk-2.3.1.tgz#555a76b85854914a0789eca72e591a716c1f0a21"
   integrity sha512-KhlerqRlI9LxkxY6sq5ar5g6KuzEEGEacnMg7AWxL/Pdq3WXGfMrdzVOO+4wOgB8f1/A8MRn0l/zjwAFZqAvYA==
@@ -2023,13 +2023,6 @@
     "@taquito/taquito" "^10.1.0"
     "@taquito/utils" "^10.1.0"
 
-"@taquito/http-utils@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/http-utils/-/http-utils-10.0.0.tgz"
-  integrity sha512-q3JRQ9+T0RiXTw8UkA+ihtxYFZSIQPdK/0Z1yeEKIX2Gkzr9vNbWVRMZJcvBjdezKPlbw+NyOqWyz7dyR/UHaQ==
-  dependencies:
-    xhr2-cookies "^1.1.0"
-
 "@taquito/http-utils@^10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@taquito/http-utils/-/http-utils-10.1.0.tgz#2881840bfce7d06ab10d1d4bf1824b9113a1ac8c"
@@ -2037,25 +2030,10 @@
   dependencies:
     xhr2-cookies "^1.1.0"
 
-"@taquito/michel-codec@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/michel-codec/-/michel-codec-10.0.0.tgz"
-  integrity sha512-+PCOGEOvix74mTkIGg/unYieHt9BY+h6n7XSohGTJJlD9FgIXoUQ8gZ2SRXXBtNE5qPEm6Eft9QDqq7LaIT3NA==
-
 "@taquito/michel-codec@^10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@taquito/michel-codec/-/michel-codec-10.1.0.tgz#2518cd4d6bcacd35f691f62dc355f82e4456ef8b"
   integrity sha512-tbE7jir69zrC9GFpF278V69TiL8vNrt5Dfs8ldm5o7V3Mf4vXfYO632E0IsgbS6g3W5c3TJIZ/mue5WiTpfcWg==
-
-"@taquito/michelson-encoder@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/michelson-encoder/-/michelson-encoder-10.0.0.tgz"
-  integrity sha512-OG/3W0LzkuJTx0oUCHltl4T1LqI86Lr+/jUk+oKa5DDDZ7VC38REHJH5CyKJfASIFsR+YhvHg9sOGqDXjXsgFw==
-  dependencies:
-    "@taquito/rpc" "^10.0.0"
-    "@taquito/utils" "^10.0.0"
-    bignumber.js "^9.0.1"
-    fast-json-stable-stringify "^2.1.0"
 
 "@taquito/michelson-encoder@^10.1.0":
   version "10.1.0"
@@ -2066,15 +2044,6 @@
     "@taquito/utils" "^10.1.0"
     bignumber.js "^9.0.1"
     fast-json-stable-stringify "^2.1.0"
-
-"@taquito/rpc@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/rpc/-/rpc-10.0.0.tgz"
-  integrity sha512-xX+FiU3cNJTI3mWXEdockpmbMyl2SWJ9rGNIqdZi9kJYgrWgSy6DpA0XzGNPyNJF2Ucrhtd+DjcZKZOy6BlAVQ==
-  dependencies:
-    "@taquito/http-utils" "^10.0.0"
-    bignumber.js "^9.0.1"
-    lodash "^4.17.21"
 
 "@taquito/rpc@^10.1.0":
   version "10.1.0"
@@ -2099,20 +2068,6 @@
     pbkdf2 "^3.1.2"
     typedarray-to-buffer "^4.0.0"
 
-"@taquito/taquito@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/taquito/-/taquito-10.0.0.tgz"
-  integrity sha512-GO4mluG3t+GtO/YasjsC1rhl/c8jI1jc047arqtD4fcJD9YorTBrurjz83bBvipG1TjF8M5n70Nk7eEYkBzn4g==
-  dependencies:
-    "@taquito/http-utils" "^10.0.0"
-    "@taquito/michel-codec" "^10.0.0"
-    "@taquito/michelson-encoder" "^10.0.0"
-    "@taquito/rpc" "^10.0.0"
-    "@taquito/utils" "^10.0.0"
-    bignumber.js "^9.0.1"
-    rx-sandbox "^1.0.4"
-    rxjs "^6.6.3"
-
 "@taquito/taquito@^10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@taquito/taquito/-/taquito-10.1.0.tgz#0fdcc69bad0f274f69f989a4d9b9162335d32f66"
@@ -2126,15 +2081,6 @@
     bignumber.js "^9.0.1"
     rx-sandbox "^1.0.4"
     rxjs "^6.6.3"
-
-"@taquito/utils@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/@taquito/utils/-/utils-10.0.0.tgz"
-  integrity sha512-02BCexVFVE7jxZMZKvNtPNptvao/fKrWAXSoZoGPtdCQlyxXJDwKinu6vyyuZhvhj/jB0GUbZ4WKJevcNV1qIA==
-  dependencies:
-    blakejs "^1.1.0"
-    bs58check "^2.1.2"
-    buffer "^6.0.3"
 
 "@taquito/utils@^10.1.0":
   version "10.1.0"
@@ -2188,11 +2134,6 @@
   integrity sha512-IR0iWbFkgd56Bu5ZI/ej8yQwrkCv8Qydx6RzwbKz9faXazR/+5tvYKsZQgyXJiwgpcva127YO6JcWy7YlCfofQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
-
-"@tezos-contrib/react-wallet-provider@^1.0.0-alpha.11":
-  version "1.0.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@tezos-contrib/react-wallet-provider/-/react-wallet-provider-1.0.0-alpha.11.tgz#61e032b9f87a5988b0557338e881ecdd0b9aa20e"
-  integrity sha512-eOvp1wtE1UiYyzZQjmrXcOnkh1TqRTvKzHt+Nkt5BDgqULoxL3D8jKZRO4/XhJglW0yJgol6azbrCmVuf9S7Ng==
 
 "@tootallnate/once@1":
   version "1.1.2"

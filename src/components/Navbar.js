@@ -6,7 +6,7 @@ import { ReactComponent as BlackName } from '../static/name-black.svg';
 import EthereumButton from "./MetamaskButton";
 import ThemeSwitch from "./ThemeSwitch";
 import ThemeContext from '../context/ThemeContext';
-import Active from './connectTez'
+import BeaconButton from './BeaconButton'
 import Typography from "./Typography";
 import BigNumber from "bignumber.js";
 import WalletsButton from './WalletsButton';
@@ -22,7 +22,7 @@ const Navbar = (props) => {
 
     function TezosButton() {
         return (
-            <Active />
+            <BeaconButton connected={props.beaconConnected} connect={props.beaconConnect} disconnect={props.beaconDisconnect} activeAccount={props.beaconActiveAccount} />
         )
     }
 

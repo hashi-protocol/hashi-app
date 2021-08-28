@@ -134,27 +134,25 @@ class Bridge extends Component {
 
         const erc721Contract = new this.state.web3.eth.Contract(tzNFT.abi, contractAddress);
         let promise = erc721Contract.methods.safeTransferFrom(this.props.account, process.env.REACT_APP_NFTLOCK_CONTRACT_ROPSTEN, tokenId)
-            .send({ from: this.props.account})
+            .send({ from: this.props.account })
             .then(res => {
                 console.log('Success', res);
                 alert(`You have successfully locked your nft #${tokenId}, you can mint it now on the another chain!`);
 
                 //remove token from NFTs
-                for(var i = 0; i < this.state.NFTs.length; i++)
-                {
+                for (var i = 0; i < this.state.NFTs.length; i++) {
                     console.log(this.state.NFTs[i].contract_address)
-                    if(this.state.NFTs[i].contract_address === contractAddress) {
-                        for(var j = 0; j < this.state.NFTs[i].nft_data.length; j++) {
+                    if (this.state.NFTs[i].contract_address === contractAddress) {
+                        for (var j = 0; j < this.state.NFTs[i].nft_data.length; j++) {
                             console.log(this.state.NFTs[i].nft_data[j].token_id)
-                            if(this.state.NFTs[i].nft_data[j].token_id === tokenId)
-                            {
+                            if (this.state.NFTs[i].nft_data[j].token_id === tokenId) {
                                 let nftList = this.state.NFTs.slice();
                                 nftList.splice(i, 1);
-                                this.setState({NFTs: nftList});
+                                this.setState({ NFTs: nftList });
                             }
                         }
                         if (this.state.NFTs[i].nft_data.length === 0) {
-                            this.setState({hasNFTs: false});
+                            this.setState({ hasNFTs: false });
                         }
                     }
                 }
@@ -372,7 +370,7 @@ class Bridge extends Component {
     }
 
     getLockedNFTByAddress = async () => {
-       // call tezos mint contract to fetch all NFTs
+        // call tezos mint contract to fetch all NFTs
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -392,7 +390,7 @@ class Bridge extends Component {
         }
         if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
             this.getMintedNFTonTezos();
-            this.setState({tzLockedNFTsNeedsUpdate: false});
+            this.setState({ tzLockedNFTsNeedsUpdate: false });
         }
     }
 
