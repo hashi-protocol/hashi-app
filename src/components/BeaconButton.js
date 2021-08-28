@@ -1,19 +1,18 @@
-import { useState } from 'react';
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+import React from "react";
+import Button from "./Button"
 
-const Tezos = new TezosToolkit("https://mainnet-tezos.giganode.io");
-const wallet = new BeaconWallet({ name: "Beacon Docs Taquito" });
-
-Tezos.setWalletProvider(wallet);
-
-function TezConnect() {
-	try {
-	  console.log("Requesting permissions...");
-	  const permissions = await wallet.client.requestPermissions();
-	  console.log("Got permissions:", permissions.address);
-	} catch (error) {
-	  console.log("Got error:", error);
-	}
+function BeaconButton(props) {
+  return (
+    <div>
+      <header>
+        {!props.connected && <Button onClick={props.connect}>Connect to a Tezos Wallet</Button>}
+        {props.connected && (
+          <Button onClick={props.disconnect}>Disconnect from {props.activeAccount?.address}</Button>
+        )}
+      </header>
+    </div>
+  );
 
 }
+
+export default BeaconButton;
