@@ -13,27 +13,11 @@ import { trackPromise } from 'react-promise-tracker';
 import { NFTStorage, toGatewayURL } from 'nft.storage';
 import LoadingSpiner from '../components/LoadingSpiner';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
-
-
-const Tezos = new TezosToolkit('https://florencenet.smartpy.io');
-//Tezos.setProvider({ signer: await InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp') });
-InMemorySigner.fromSecretKey('edskRyBUqwfz4sKwQiePyfRSagzaHkBwFBRCgjAA9HL9vp6cSf1KQBffVxV9Yj8TEKNGhp5Lbh8XkJdp1w93fhYSKWVYe6j9fp')
-    .then((theSigner) => {
-        Tezos.setProvider({ signer: theSigner });
-        //We can access the public key hash
-        return Tezos.signer.publicKeyHash();
-    })
-    .then((publicKeyHash) => {
-        console.log(`The public key hash associated is: ${publicKeyHash}.`);
-    })
-    .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
 
 class Bridge extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             web3: null,
@@ -43,7 +27,9 @@ class Bridge extends Component {
             nftStorageClient: new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE }),
             WrappedNFTs: [],
             hasWrappedNFTs: false,
-            tzLockedNFTsNeedsUpdate: true
+            tzLockedNFTsNeedsUpdate: true,
+            Tezos: this.props.Tezos,
+            wallet: this.props.wallet
         }
 
         this.initWeb3 = this.initWeb3.bind(this);
@@ -125,7 +111,11 @@ class Bridge extends Component {
         });
     }
 
-    handleNFTLock = async (contractAddress, tokenId) => {
+    handleNFTLock = async (contractAddress, tokenId, Tezos, wallet, tz1) => {
+
+        console.log('Tezos', Tezos);
+        console.log('wallet', wallet);
+        console.log('tz1', tz1);
 
         if (this.props.status !== 'connected') {
             alert('Please, connect your Metamask wallet');
@@ -161,15 +151,23 @@ class Bridge extends Component {
         trackPromise(promise);
         await promise;
 
+        const address = await wallet.getPKH();
+        if (!address) {
+            await wallet.requestPermissions();
+        }
+
         const tzContract = await Tezos.wallet.at("KT1KYh1VoxKbmTjizhTQfbpvUSNxRbiZufha");
-        const op = await tzContract.methods.mint(
-            "tz1RpMDtuu9mLThpSe4ZEBRNMnX7nsPHFQio",
-            1,
-            "The Third",
-            tokenId,
-            this.state.NFTs[0]['nft_data'][0]['external_data']['image'],
-        ).send();
-        await op.confirmation();
+        try {
+            await tzContract.methods.mint(
+                tz1,
+                1,
+                "The Third",
+                tokenId,
+                this.state.NFTs[0]['nft_data'][0]['external_data']['image'],
+            ).send();
+        } catch (error) {
+            console.log(`The contract call failed`)
+        }
     }
 
     handleNFTGenerationETH = async () => {
@@ -240,15 +238,15 @@ class Bridge extends Component {
     queryNFTsFromGraph = async () => {
         const planetRequest = `
             query {
-              nfts(
-                where: {owner: "${this.props.account}"}
-              ) {
-                id
-                owner
-                contractAddress
-              }
-            }
-          `
+                nfts(
+                    where: {owner: "${this.props.account}"}
+                    ) {
+                        id
+                        owner
+                        contractAddress
+                    }
+                }
+                `
         const client = new ApolloClient({
             uri: process.env.REACT_APP_GRAPH_URL,
             cache: new InMemoryCache()
@@ -323,13 +321,22 @@ class Bridge extends Component {
         const nftList = [];
 
         const contractResponse = await fetch('https://api.better-call.dev/v1/bigmap/florencenet/121539/keys');
-        const jsonContractResponse = await contractResponse.json();
-        const data = jsonContractResponse;
+        const data = await contractResponse.json();
 
-        console.log("tezosAddress", this.props.tezosAddress)
-        if (this.props.tezosConnected) {
+        const tz1 = await this.props.wallet.getPKH();
+
+        //build token id list
+        const dataLength = data.length;
+        const tokenIds = []
+        for (let k = 0; k < dataLength; k++) {
+            let tokenId = data[k]['data']['key']['value']
+            tokenIds.push(parseInt(tokenId))
+        }
+
+        console.log("tezosAddress", tz1)
+        if (this.props.wallet.getPKH()) {
             // todo change account
-            const accountResponse = await fetch(`https://api.better-call.dev/v1/account/florencenet/${this.props.tezosAddress}/token_balances`);
+            const accountResponse = await fetch(`https://api.better-call.dev/v1/account/florencenet/${tz1}/token_balances`);
             const jsonAccountResponse = await accountResponse.json();
             const balances = await jsonAccountResponse["balances"];
             const balancesLength = await balances.length;
@@ -341,10 +348,17 @@ class Bridge extends Component {
 
                     console.log("tokenId", tokenId)
 
-                    // Get Url
-                    const urlOfTokenId = await data[tokenId - 1]['data']['value']['children']['1']['children']['1']['value'];
+                    // Get data position
+                    let position = 0;
+                    while (tokenIds[position] !== tokenId && position < dataLength) {
+                        console.log(position)
+                        position++;
+                    }
 
-                    console.log(urlOfTokenId)
+                    // Get Url
+                    const urlOfTokenId = await data[position]['data']['value']['children']['1']['children']['1']['value'];
+
+                    console.log('urlOfTokenId', urlOfTokenId)
 
 
                     // Add the NFT to the list
@@ -365,7 +379,7 @@ class Bridge extends Component {
             }
 
         }
-        const hasWrappedNFTs = (nftList === []);
+        const hasWrappedNFTs = !(nftList === []);
         this.setState({ WrappedNFTs: nftList, hasWrappedNFTs: hasWrappedNFTs });
     }
 
@@ -377,7 +391,7 @@ class Bridge extends Component {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
         }
-        if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
+        if (this.props.wallet.getPKH() && this.state.tzLockedNFTsNeedsUpdate) {
             this.getMintedNFTonTezos();
             this.setState({ tzLockedNFTsNeedsUpdate: false });
         }
@@ -388,7 +402,7 @@ class Bridge extends Component {
         if (this.state.web3 == null && this.props.status === "connected") {
             this.initWeb3();
         }
-        if (this.props.tezosConnected && this.state.tzLockedNFTsNeedsUpdate) {
+        if (this.props.wallet.getPKH() && this.state.tzLockedNFTsNeedsUpdate) {
             this.getMintedNFTonTezos();
             this.setState({ tzLockedNFTsNeedsUpdate: false });
         }
@@ -404,7 +418,7 @@ class Bridge extends Component {
         let swiperWrappedNFTs;
 
         if (this.state.hasNFTs) {
-            swiperAvailableNFTs = <SwiperNFT NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock and wrap NFT" />
+            swiperAvailableNFTs = <SwiperNFT Tezos={this.props.Tezos} wallet={this.props.wallet} tz1={"tz1a2Key6JMpmHdqX1E5rXzj5r1d7LFqkJS9"} NFTs={this.state.NFTs} handleNFTLock={this.handleNFTLock} buttonMessage="Lock and wrap NFT" />
         } else {
             swiperAvailableNFTs = <div>
                 <Typography variant="body1">Ouups! It seems that you don't have any NFT in your wallet...</Typography>
